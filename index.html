@@ -62,3 +62,171 @@
             color: white;
             padding: 15px;
             border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #2980b9;
+        }
+
+        .form-container button:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        /* Spinner Style */
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Thank You Page Style */
+        #thankYouPage {
+            text-align: center;
+            font-size: 20px;
+            padding: 20px;
+            border: 2px solid #3498db;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Prakriti Assessment Form</h2>
+        <form id="prakritiForm" class="form-container">
+            
+            <!-- Question 1 -->
+            <div class="question-container">
+                <label for="q1">Body Build (Deha Pramana):</label>
+                <div>
+                    <input type="radio" name="q1" value="V"> Thin / Underweight (V)
+                    <input type="radio" name="q1" value="P"> Moderate / Well-built (P)
+                    <input type="radio" name="q1" value="K"> Heavy / Well nourished or overweight (K)
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-container">
+                <label for="q2">Skin Texture:</label>
+                <div>
+                    <input type="radio" name="q2" value="V"> Dry, rough (V)
+                    <input type="radio" name="q2" value="P"> Soft, warm, slightly oily (P)
+                    <input type="radio" name="q2" value="K"> Smooth, oily (K)
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-container">
+                <label for="q3">Hair Type:</label>
+                <div>
+                    <input type="radio" name="q3" value="V"> Dry, brittle, frizzy (V)
+                    <input type="radio" name="q3" value="P"> Soft, fine, tends to greying early (P)
+                    <input type="radio" name="q3" value="K"> Thick, oily, strong (K)
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-container">
+                <label for="q4">Complexion:</label>
+                <div>
+                    <input type="radio" name="q4" value="V"> Dark / dull (V)
+                    <input type="radio" name="q4" value="P"> Fair / reddish / flushed (P)
+                    <input type="radio" name="q4" value="K"> Clear, glowing, pale white (K)
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-container">
+                <label for="q5">Eyes:</label>
+                <div>
+                    <input type="radio" name="q5" value="V"> Small, unsteady movement (V)
+                    <input type="radio" name="q5" value="P"> Sharp, medium sized, reddish sclera (P)
+                    <input type="radio" name="q5" value="K"> Large, attractive, calm looking (K)
+                </div>
+            </div>
+
+            <!-- Additional questions continue... -->
+
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" style="display:none;">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Thank You Page -->
+        <div id="thankYouPage" style="display:none;">
+            <h1>Thank You for Submitting!</h1>
+            <p>Your Prakriti has been recorded. You can now close this page.</p>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwLhiMjx4Ppf8QQxDjWPa5BKEv7T8i82_B87VZZ0ELsDaI6-B7_UwzxTHsD8TdT6OPo/exec";
+
+        document.getElementById("prakritiForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+          
+            // Disable the submit button to prevent multiple submissions
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = "Submitting...";
+
+            // Form data
+            const formData = {
+                q1: document.querySelector('input[name="q1"]:checked').value,
+                q2: document.querySelector('input[name="q2"]:checked').value,
+                q3: document.querySelector('input[name="q3"]:checked').value,
+                q4: document.querySelector('input[name="q4"]:checked').value,
+                q5: document.querySelector('input[name="q5"]:checked').value,
+                q6: document.querySelector('input[name="q6"]:checked').value,
+                q7: document.querySelector('input[name="q7"]:checked').value,
+                q8: document.querySelector('input[name="q8"]:checked').value,
+                q9: document.querySelector('input[name="q9"]:checked').value,
+                q10: document.querySelector('input[name="q10"]:checked').value,
+                q11: document.querySelector('input[name="q11"]:checked').value,
+                q12: document.querySelector('input[name="q12"]:checked').value,
+                q13: document.querySelector('input[name="q13"]:checked').value,
+                q14: document.querySelector('input[name="q14"]:checked').value,
+                q15: document.querySelector('input[name="q15"]:checked').value,
+                q16: document.querySelector('input[name="q16"]:checked').value,
+                q17: document.querySelector('input[name="q17"]:checked').value,
+                q18: document.querySelector('input[name="q18"]:checked').value,
+                q19: document.querySelector('input[name="q19"]:checked').value,
+                q20: document.querySelector('input[name="q20"]:checked').value
+            };
+
+            // Validation
+            for (let i = 1; i <= 20; i++) {
+                if (!formData[`q${i}`]) {
+                    alert("Please answer all questions.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = "Submit";
+                    return;
+                }
+            }
+
+            // Show loading spinner
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            loadingSpinner.style.display = "block";
+
+            fetch(scriptURL, {
+                method: "POST",
+                body: JSON
