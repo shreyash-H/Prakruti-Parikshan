@@ -1,396 +1,358 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prakriti Assessment Form</title>
-    <style>
-        /* Basic styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fa;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #3498db;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        label {
-            font-size: 18px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .question-container {
-            margin-bottom: 20px;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-container input[type="radio"] {
-            margin: 8px 15px 0 0;
-        }
-
-        .form-container label {
-            font-size: 16px;
-        }
-
-        .question-container input {
-            margin-right: 12px;
-        }
-
-        .form-container button {
-            background-color: #3498db;
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-container button:hover {
-            background-color: #2980b9;
-        }
-
-        .form-container button:disabled {
-            background-color: #7f8c8d;
-            cursor: not-allowed;
-        }
-
-        /* Spinner Style */
-        .spinner {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Thank You Page Style */
-        #thankYouPage {
-            text-align: center;
-            font-size: 20px;
-            padding: 20px;
-            border: 2px solid #3498db;
-            margin-top: 20px;
-            display: none;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ayurvedic Prakriti Assessment</title>
+  <style>
+    :root{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#111}
+    body{background:#f7fafc;margin:0;padding:24px;display:flex;justify-content:center}
+    .card{width:960px;max-width:96%;background:#fff;padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(20,20,40,0.08)}
+    h1{margin:0 0 8px;font-size:20px}
+    p.lead{margin:0 0 18px;color:#4a5568}
+    .q{padding:12px 0;border-bottom:1px dashed #e6eef6}
+    .q:last-child{border-bottom:none}
+    .opts{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+    label.opt{flex:1;min-width:220px;background:#f3f7fb;padding:10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+    input[type=radio]{margin-right:8px}
+    label.opt:hover{background:#eef6ff}
+    .controls{display:flex;gap:10px;margin-top:18px}
+    button{padding:10px 14px;border-radius:8px;border:0;cursor:pointer}
+    button.primary{background:#2b6cb0;color:#fff}
+    button.ghost{background:#edf2f7}
+    .result{margin-top:18px;padding:14px;border-radius:8px;background:#f0fff4;border:1px solid #c6f6d5}
+    .counts{margin-top:10px;color:#2d3748}
+    .small{font-size:13px;color:#4a5568}
+    footer{margin-top:14px;font-size:13px;color:#718096}
+    @media(max-width:700px){label.opt{min-width:initial;flex-basis:100%}}
+  </style>
 </head>
 <body>
+  <div class="card">
+    <h1>Ayurvedic Prakriti Assessment</h1>
+    <p class="lead">Choose the option that best describes you. After answering all questions click <strong>Calculate Result</strong>.</p>
 
-    <div class="container">
-        <h2>Prakriti Assessment Form</h2>
-        <form id="prakritiForm" class="form-container">
-            
-            <!-- Question 1 -->
-            <div class="question-container">
-                <label for="q1">Body Build (Deha Pramana):</label>
-                <div>
-                    <input type="radio" name="q1" value="V"> Thin / Underweight (V)
-                    <input type="radio" name="q1" value="P"> Moderate / Well-built (P)
-                    <input type="radio" name="q1" value="K"> Heavy / Well nourished or overweight (K)
-                </div>
-            </div>
+    <form id="prakritiForm" onsubmit="return false;">
 
-            <!-- Question 2 -->
-            <div class="question-container">
-                <label for="q2">Skin Texture:</label>
-                <div>
-                    <input type="radio" name="q2" value="V"> Dry, rough (V)
-                    <input type="radio" name="q2" value="P"> Soft, warm, slightly oily (P)
-                    <input type="radio" name="q2" value="K"> Smooth, oily (K)
-                </div>
-            </div>
+      <!-- Questions 1..20 -->
 
-            <!-- Question 3 -->
-            <div class="question-container">
-                <label for="q3">Hair Type:</label>
-                <div>
-                    <input type="radio" name="q3" value="V"> Dry, brittle, frizzy (V)
-                    <input type="radio" name="q3" value="P"> Soft, fine, tends to greying early (P)
-                    <input type="radio" name="q3" value="K"> Thick, oily, strong (K)
-                </div>
-            </div>
-
-            <!-- Question 4 -->
-            <div class="question-container">
-                <label for="q4">Complexion:</label>
-                <div>
-                    <input type="radio" name="q4" value="V"> Dark / dull (V)
-                    <input type="radio" name="q4" value="P"> Fair / reddish / flushed (P)
-                    <input type="radio" name="q4" value="K"> Clear, glowing, pale white (K)
-                </div>
-            </div>
-
-            <!-- Question 5 -->
-            <div class="question-container">
-                <label for="q5">Eyes:</label>
-                <div>
-                    <input type="radio" name="q5" value="V"> Small, unsteady movement (V)
-                    <input type="radio" name="q5" value="P"> Sharp, medium sized, reddish sclera (P)
-                    <input type="radio" name="q5" value="K"> Large, attractive, calm looking (K)
-                </div>
-            </div>
-
-            <!-- Question 6 -->
-            <div class="question-container">
-                <label for="q6">Appetite:</label>
-                <div>
-                    <input type="radio" name="q6" value="V"> Irregular – sometimes very low, sometimes high (V)
-                    <input type="radio" name="q6" value="P"> Strong & frequent hunger (P)
-                    <input type="radio" name="q6" value="K"> Mild and steady appetite (K)
-                </div>
-            </div>
-
-            <!-- Question 7 -->
-            <div class="question-container">
-                <label for="q7">Sweating:</label>
-                <div>
-                    <input type="radio" name="q7" value="V"> Minimal sweating (V)
-                    <input type="radio" name="q7" value="P"> Excessive sweating with strong odor (P)
-                    <input type="radio" name="q7" value="K"> Moderate sweating, no strong odor (K)
-                </div>
-            </div>
-
-            <!-- Question 8 -->
-            <div class="question-container">
-                <label for="q8">Digestive Pattern:</label>
-                <div>
-                    <input type="radio" name="q8" value="V"> Variable digestion, gas & bloating common (V)
-                    <input type="radio" name="q8" value="P"> Fast digestion, feel hungry often (P)
-                    <input type="radio" name="q8" value="K"> Slow digestion, heaviness common (K)
-                </div>
-            </div>
-
-            <!-- Question 9 -->
-            <div class="question-container">
-                <label for="q9">Thirst:</label>
-                <div>
-                    <input type="radio" name="q9" value="V"> Low, forget to drink water (V)
-                    <input type="radio" name="q9" value="P"> High, thirsty frequently (P)
-                    <input type="radio" name="q9" value="K"> Moderate thirst (K)
-                </div>
-            </div>
-
-            <!-- Question 10 -->
-            <div class="question-container">
-                <label for="q10">Sleep Pattern:</label>
-                <div>
-                    <input type="radio" name="q10" value="V"> Light, interrupted sleep (V)
-                    <input type="radio" name="q10" value="P"> Moderate sleep, sometimes disturbed (P)
-                    <input type="radio" name="q10" value="K"> Deep and long sleep (K)
-                </div>
-            </div>
-
-            <!-- Question 11 -->
-            <div class="question-container">
-                <label for="q11">Tolerance to Seasons:</label>
-                <div>
-                    <input type="radio" name="q11" value="V"> Cannot tolerate cold (V)
-                    <input type="radio" name="q11" value="P"> Cannot tolerate heat (P)
-                    <input type="radio" name="q11" value="K"> Can tolerate both fairly well (K)
-                </div>
-            </div>
-
-            <!-- Question 12 -->
-            <div class="question-container">
-                <label for="q12">Bowel Movement:</label>
-                <div>
-                    <input type="radio" name="q12" value="V"> Hard, dry stools; constipation (V)
-                    <input type="radio" name="q12" value="P"> Loose or frequent stools (P)
-                    <input type="radio" name="q12" value="K"> Well formed stools (K)
-                </div>
-            </div>
-
-            <!-- Question 13 -->
-            <div class="question-container">
-                <label for="q13">Memory:</label>
-                <div>
-                    <input type="radio" name="q13" value="V"> Quick to learn, quick to forget (V)
-                    <input type="radio" name="q13" value="P"> Moderate memory power (P)
-                    <input type="radio" name="q13" value="K"> Slow learner but remembers well (K)
-                </div>
-            </div>
-
-            <!-- Question 14 -->
-            <div class="question-container">
-                <label for="q14">Speech:</label>
-                <div>
-                    <input type="radio" name="q14" value="V"> Fast, talkative (V)
-                    <input type="radio" name="q14" value="P"> Sharp, precise, sometimes harsh (P)
-                    <input type="radio" name="q14" value="K"> Slow, soft, calm (K)
-                </div>
-            </div>
-
-            <!-- Question 15 -->
-            <div class="question-container">
-                <label for="q15">Temperament:</label>
-                <div>
-                    <input type="radio" name="q15" value="V"> Anxious, fearful, overthinking (V)
-                    <input type="radio" name="q15" value="P"> Irritable, anger quickly visible (P)
-                    <input type="radio" name="q15" value="K"> Calm, stable, patient (K)
-                </div>
-            </div>
-
-            <!-- Question 16 -->
-            <div class="question-container">
-                <label for="q16">Decision Making:</label>
-                <div>
-                    <input type="radio" name="q16" value="V"> Indecisive, changes decision frequently (V)
-                    <input type="radio" name="q16" value="P"> Quick decision maker (P)
-                    <input type="radio" name="q16" value="K"> Slow but steady and firm decisions (K)
-                </div>
-            </div>
-
-            <!-- Question 17 -->
-            <div class="question-container">
-                <label for="q17">Social Behaviour:</label>
-                <div>
-                    <input type="radio" name="q17" value="V"> Introvert, prefers being alone (V)
-                    <input type="radio" name="q17" value="P"> Assertive, outspoken, leadership nature (P)
-                    <input type="radio" name="q17" value="K"> Friendly, cooperative, peace-loving (K)
-                </div>
-            </div>
-
-            <!-- Question 18 -->
-            <div class="question-container">
-                <label for="q18">Food Preferences:</label>
-                <div>
-                    <input type="radio" name="q18" value="V"> Likes warm, oily foods (V)
-                    <input type="radio" name="q18" value="P"> Likes cold or spicy foods (P)
-                    <input type="radio" name="q18" value="K"> Likes sweet/mild taste foods (K)
-                </div>
-            </div>
-
-            <!-- Question 19 -->
-            <div class="question-container">
-                <label for="q19">Energy Levels:</label>
-                <div>
-                    <input type="radio" name="q19" value="V"> Low, gets tired quickly (V)
-                    <input type="radio" name="q19" value="P"> High, energetic but may get exhausted (P)
-                    <input type="radio" name="q19" value="K"> Stable energy throughout the day (K)
-                </div>
-            </div>
-
-            <!-- Question 20 -->
-            <div class="question-container">
-                <label for="q20">Working Style:</label>
-                <div>
-                    <input type="radio" name="q20" value="V"> Quick but careless (V)
-                    <input type="radio" name="q20" value="P"> Fast but gets irritated when disturbed (P)
-                    <input type="radio" name="q20" value="K"> Slow but careful & complete work (K)
-                </div>
-            </div>
-
-            <button type="submit" id="submitBtn">Submit</button>
-        </form>
-
-        <!-- Loading Spinner -->
-        <div id="loadingSpinner" style="display:none;">
-            <div class="spinner"></div>
+      <div class="q">
+        <strong>1. Body Build (Deha Pramana)</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q1" value="V" required> Thin / Underweight (V)</label>
+          <label class="opt"><input type="radio" name="q1" value="P"> Moderate / Well-built (P)</label>
+          <label class="opt"><input type="radio" name="q1" value="K"> Heavy / Well nourished / Overweight (K)</label>
         </div>
+      </div>
 
-        <!-- Thank You Page -->
-        <div id="thankYouPage" style="display:none;">
-            <h1>Thank You for Submitting!</h1>
-            <p>Your Prakriti has been recorded. You can now close this page.</p>
+      <div class="q">
+        <strong>2. Skin Texture</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q2" value="V" required> Dry, rough (V)</label>
+          <label class="opt"><input type="radio" name="q2" value="P"> Soft, warm, slightly oily (P)</label>
+          <label class="opt"><input type="radio" name="q2" value="K"> Smooth, oily (K)</label>
         </div>
-    </div>
+      </div>
 
-    <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbwLhiMjx4Ppf8QQxDjWPa5BKEv7T8i82_B87VZZ0ELsDaI6-B7_UwzxTHsD8TdT6OPo/exec";
+      <div class="q">
+        <strong>3. Hair Type</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q3" value="V" required> Dry, brittle, frizzy (V)</label>
+          <label class="opt"><input type="radio" name="q3" value="P"> Soft, fine, early greying (P)</label>
+          <label class="opt"><input type="radio" name="q3" value="K"> Thick, oily, strong (K)</label>
+        </div>
+      </div>
 
-        document.getElementById("prakritiForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-          
-            // Disable the submit button to prevent multiple submissions
-            const submitBtn = document.getElementById("submitBtn");
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = "Submitting...";
+      <div class="q">
+        <strong>4. Complexion</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q4" value="V" required> Dark / dull (V)</label>
+          <label class="opt"><input type="radio" name="q4" value="P"> Fair / reddish / flushed (P)</label>
+          <label class="opt"><input type="radio" name="q4" value="K"> Clear, glowing, pale (K)</label>
+        </div>
+      </div>
 
-            // Form data
-            const formData = {
-                q1: document.querySelector('input[name="q1"]:checked').value,
-                q2: document.querySelector('input[name="q2"]:checked').value,
-                q3: document.querySelector('input[name="q3"]:checked').value,
-                q4: document.querySelector('input[name="q4"]:checked').value,
-                q5: document.querySelector('input[name="q5"]:checked').value,
-                q6: document.querySelector('input[name="q6"]:checked').value,
-                q7: document.querySelector('input[name="q7"]:checked').value,
-                q8: document.querySelector('input[name="q8"]:checked').value,
-                q9: document.querySelector('input[name="q9"]:checked').value,
-                q10: document.querySelector('input[name="q10"]:checked').value,
-                q11: document.querySelector('input[name="q11"]:checked').value,
-                q12: document.querySelector('input[name="q12"]:checked').value,
-                q13: document.querySelector('input[name="q13"]:checked').value,
-                q14: document.querySelector('input[name="q14"]:checked').value,
-                q15: document.querySelector('input[name="q15"]:checked').value,
-                q16: document.querySelector('input[name="q16"]:checked').value,
-                q17: document.querySelector('input[name="q17"]:checked').value,
-                q18: document.querySelector('input[name="q18"]:checked').value,
-                q19: document.querySelector('input[name="q19"]:checked').value,
-                q20: document.querySelector('input[name="q20"]:checked').value
-            };
+      <div class="q">
+        <strong>5. Eyes</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q5" value="V" required> Small, restless (V)</label>
+          <label class="opt"><input type="radio" name="q5" value="P"> Sharp, medium, slightly red (P)</label>
+          <label class="opt"><input type="radio" name="q5" value="K"> Large, calm, attractive (K)</label>
+        </div>
+      </div>
 
-            // Validation
-            for (let i = 1; i <= 20; i++) {
-                if (!formData[`q${i}`]) {
-                    alert("Please answer all questions.");
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = "Submit";
-                    return;
-                }
-            }
+      <div class="q">
+        <strong>6. Appetite</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q6" value="V" required> Irregular, varies a lot (V)</label>
+          <label class="opt"><input type="radio" name="q6" value="P"> Strong and frequent hunger (P)</label>
+          <label class="opt"><input type="radio" name="q6" value="K"> Mild, steady appetite (K)</label>
+        </div>
+      </div>
 
-            // Show loading spinner
-            const loadingSpinner = document.getElementById("loadingSpinner");
-            loadingSpinner.style.display = "block";
+      <div class="q">
+        <strong>7. Sweating</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q7" value="V" required> Minimal (V)</label>
+          <label class="opt"><input type="radio" name="q7" value="P"> Excessive, strong odor (P)</label>
+          <label class="opt"><input type="radio" name="q7" value="K"> Moderate, no odor (K)</label>
+        </div>
+      </div>
 
-            fetch(scriptURL, {
-                method: "POST",
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                loadingSpinner.style.display = "none";
-                document.getElementById("thankYouPage").style.display = "block";
-            })
-            .catch(error => {
-                alert("Error submitting the form. Please try again.");
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = "Submit";
-                loadingSpinner.style.display = "none";
-            });
-        });
-    </script>
+      <div class="q">
+        <strong>8. Digestive Pattern</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q8" value="V" required> Variable, gas/bloating (V)</label>
+          <label class="opt"><input type="radio" name="q8" value="P"> Fast, frequent hunger (P)</label>
+          <label class="opt"><input type="radio" name="q8" value="K"> Slow, heavy digestion (K)</label>
+        </div>
+      </div>
 
+      <div class="q">
+        <strong>9. Thirst</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q9" value="V" required> Low (V)</label>
+          <label class="opt"><input type="radio" name="q9" value="P"> High, thirsty often (P)</label>
+          <label class="opt"><input type="radio" name="q9" value="K"> Moderate (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>10. Sleep Pattern</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q10" value="V" required> Light, disturbed (V)</label>
+          <label class="opt"><input type="radio" name="q10" value="P"> Moderate, sometimes disturbed (P)</label>
+          <label class="opt"><input type="radio" name="q10" value="K"> Deep and long sleep (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>11. Season Tolerance</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q11" value="V" required> Cannot tolerate cold (V)</label>
+          <label class="opt"><input type="radio" name="q11" value="P"> Cannot tolerate heat (P)</label>
+          <label class="opt"><input type="radio" name="q11" value="K"> Tolerates both fairly well (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>12. Bowel Movement</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q12" value="V" required> Hard, dry, constipation (V)</label>
+          <label class="opt"><input type="radio" name="q12" value="P"> Loose or frequent stools (P)</label>
+          <label class="opt"><input type="radio" name="q12" value="K"> Well-formed stools (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>13. Memory</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q13" value="V" required> Quick to learn, quick to forget (V)</label>
+          <label class="opt"><input type="radio" name="q13" value="P"> Moderate memory (P)</label>
+          <label class="opt"><input type="radio" name="q13" value="K"> Slow learner, remembers well (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>14. Speech</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q14" value="V" required> Fast, talkative (V)</label>
+          <label class="opt"><input type="radio" name="q14" value="P"> Sharp, precise, harsh (P)</label>
+          <label class="opt"><input type="radio" name="q14" value="K"> Slow, soft, calm (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>15. Temperament</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q15" value="V" required> Anxious, overthinking (V)</label>
+          <label class="opt"><input type="radio" name="q15" value="P"> Irritable, anger easily (P)</label>
+          <label class="opt"><input type="radio" name="q15" value="K"> Calm, stable, patient (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>16. Decision Making</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q16" value="V" required> Indecisive, changes mind often (V)</label>
+          <label class="opt"><input type="radio" name="q16" value="P"> Quick decisions (P)</label>
+          <label class="opt"><input type="radio" name="q16" value="K"> Slow but firm decisions (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>17. Social Behaviour</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q17" value="V" required> Introvert, prefers being alone (V)</label>
+          <label class="opt"><input type="radio" name="q17" value="P"> Assertive, outspoken (P)</label>
+          <label class="opt"><input type="radio" name="q17" value="K"> Friendly, cooperative, peace-loving (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>18. Food Preferences</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q18" value="V" required> Likes warm, oily foods (V)</label>
+          <label class="opt"><input type="radio" name="q18" value="P"> Likes cold or spicy foods (P)</label>
+          <label class="opt"><input type="radio" name="q18" value="K"> Likes sweet/mild foods (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>19. Energy Levels</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q19" value="V" required> Low, tired quickly (V)</label>
+          <label class="opt"><input type="radio" name="q19" value="P"> High, energetic but gets exhausted (P)</label>
+          <label class="opt"><input type="radio" name="q19" value="K"> Stable energy throughout the day (K)</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <strong>20. Working Style</strong>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q20" value="V" required> Quick but careless (V)</label>
+          <label class="opt"><input type="radio" name="q20" value="P"> Fast but easily irritated (P)</label>
+          <label class="opt"><input type="radio" name="q20" value="K"> Slow, careful, complete (K)</label>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="primary" onclick="calculateResult()">Calculate Result</button>
+        <button type="button" class="ghost" onclick="resetForm()">Reset</button>
+        <button type="button" class="ghost" onclick="downloadCSV()">Download CSV</button>
+      </div>
+
+      <div id="out" class="result" style="display:none">
+        <div><strong>Final Prakriti:</strong> <span id="finalPrakriti"></span></div>
+        <div class="counts small">Vata: <span id="vcount">0</span> &nbsp; Pitta: <span id="pcount">0</span> &nbsp; Kapha: <span id="kcount">0</span></div>
+        <div id="explain" class="small" style="margin-top:8px;color:#2d3748"></div>
+      </div>
+
+      <footer>
+        <p class="small">This is a simple self-assessment tool. For clinical or medical diagnosis consult a qualified Ayurvedic practitioner.</p>
+      </footer>
+
+    </form>
+  </div>
+
+  <script>
+    const questions = 20;
+
+    function calculateResult(){
+      const form = document.getElementById('prakritiForm');
+      const data = new FormData(form);
+      // ensure all answered
+      for(let i=1;i<=questions;i++){
+        if(!data.has('q'+i)){
+          alert('Please answer question '+i);
+          return;
+        }
+      }
+
+      let v=0,p=0,k=0;
+      for(let i=1;i<=questions;i++){
+        const val = data.get('q'+i);
+        if(val==='V') v++;
+        else if(val==='P') p++;
+        else if(val==='K') k++;
+      }
+
+      document.getElementById('vcount').textContent = v;
+      document.getElementById('pcount').textContent = p;
+      document.getElementById('kcount').textContent = k;
+
+      const final = determinePrakriti(v,p,k);
+      document.getElementById('finalPrakriti').textContent = final.label;
+      document.getElementById('explain').textContent = final.explain;
+      document.getElementById('out').style.display = 'block';
+    }
+
+    function determinePrakriti(v,p,k){
+      // single dominant
+      if(v>p && v>k) return {label:'Vata', explain:'Predominant Vata features. Consider warm, grounding diet and routines.'};
+      if(p>v && p>k) return {label:'Pitta', explain:'Predominant Pitta features. Consider cooling foods and stress management.'};
+      if(k>v && k>p) return {label:'Kapha', explain:'Predominant Kapha features. Consider light, stimulating foods and activity.'};
+
+      // two-way ties
+      if(v===p && v>k) return {label:'Vata-Pitta', explain:'Mixed Vata and Pitta constitution.'};
+      if(p===k && p>v) return {label:'Pitta-Kapha', explain:'Mixed Pitta and Kapha constitution.'};
+      if(v===k && v>p) return {label:'Vata-Kapha', explain:'Mixed Vata and Kapha constitution.'};
+
+      // three-way equal
+      if(v===p && p===k) return {label:'Tridoshic / Balanced', explain:'All three doshas are in similar balance.'};
+
+      // fallback (shouldn't occur)
+      return {label:'Undetermined', explain:'Results are inconclusive.'};
+    }
+
+    function resetForm(){
+      document.getElementById('prakritiForm').reset();
+      document.getElementById('out').style.display = 'none';
+    }
+
+    function downloadCSV(){
+      const form = document.getElementById('prakritiForm');
+      const data = new FormData(form);
+      // check answered
+      for(let i=1;i<=questions;i++){
+        if(!data.has('q'+i)){
+          alert('Please answer all questions before downloading.');
+          return;
+        }
+      }
+      const now = new Date().toISOString();
+      let csv = 'Timestamp,'+Array.from({length:questions},(_,i)=>'Q'+(i+1)).join(',') + '\n';
+      const answers = [];
+      for(let i=1;i<=questions;i++) answers.push('"'+data.get('q'+i)+'"');
+      csv += '"'+now+'",' + answers.join(',') + '\n';
+
+      const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'prakriti_response_'+(new Date().toISOString().slice(0,19)).replace(/:/g,'-')+'.csv';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+  </script>
+<script>
+const scriptURL = "YOUR_WEB_APP_URL_HERE";
+
+document.getElementById("prakritiForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = {
+        q1: document.querySelector('input[name="q1"]:checked').value,
+        q2: document.querySelector('input[name="q2"]:checked').value,
+        q3: document.querySelector('input[name="q3"]:checked').value,
+        q4: document.querySelector('input[name="q4"]:checked').value,
+        q5: document.querySelector('input[name="q5"]:checked').value,
+        q6: document.querySelector('input[name="q6"]:checked').value,
+        q7: document.querySelector('input[name="q7"]:checked').value,
+        q8: document.querySelector('input[name="q8"]:checked').value,
+        q9: document.querySelector('input[name="q9"]:checked').value,
+        q10: document.querySelector('input[name="q10"]:checked').value,
+        q11: document.querySelector('input[name="q11"]:checked').value,
+        q12: document.querySelector('input[name="q12"]:checked').value,
+        q13: document.querySelector('input[name="q13"]:checked').value,
+        q14: document.querySelector('input[name="q14"]:checked').value,
+        q15: document.querySelector('input[name="q15"]:checked').value,
+        q16: document.querySelector('input[name="q16"]:checked').value,
+        q17: document.querySelector('input[name="q17"]:checked').value,
+        q18: document.querySelector('input[name="q18"]:checked').value,
+        q19: document.querySelector('input[name="q19"]:checked').value,
+        q20: document.querySelector('input[name="q20"]:checked').value
+    };
+
+    fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(data => alert("Form submitted successfully!"))
+    .catch(err => alert("Error: " + err));
+});
+</script>
 </body>
 </html>
